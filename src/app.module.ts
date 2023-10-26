@@ -2,6 +2,7 @@ import { LoggerModule } from '@mpgxc/logger';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as cors from 'cors';
+import { MailerModule } from 'mailer/mailer.module';
 import { NotificationMiddleware } from 'notification/notification.middleware';
 import { NotificationController } from './notification/notification.controller';
 import { QueueModule } from './queue/queue.module';
@@ -21,6 +22,7 @@ const notificationsHandlerCors = cors({
       isGlobal: true,
     }),
     QueueModule,
+    MailerModule,
   ],
   controllers: [NotificationController],
 })
