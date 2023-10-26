@@ -1,7 +1,7 @@
 import { LoggerModule } from '@mpgxc/logger';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { NotificationMiddleware } from 'notification/notification.moddleware';
+import { NotificationMiddleware } from 'notification/notification.middleware';
 import { NotificationController } from './notification/notification.controller';
 import { QueueModule } from './queue/queue.module';
 
