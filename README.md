@@ -1,0 +1,1 @@
+[![Vercel Production Deployment](https://github.com/mpgxc/vercel.serverless.api/actions/workflows/vercel-deploy.yml/badge.svg)](https://github.com/mpgxc/vercel.serverless.api/actions/workflows/vercel-deploy.yml)
