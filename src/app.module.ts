@@ -1,17 +1,10 @@
 import { LoggerModule } from '@mpgxc/logger';
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import * as cors from 'cors';
-import { MailerModule } from 'mailer/mailer.module';
-import { NotificationMiddleware } from 'notification/notification.middleware';
-import { NotificationController } from './notification/notification.controller';
-import { QueueModule } from './queue/queue.module';
-
-const notificationsHandlerCors = cors({
-  origin: ['https://upstash.com'],
-  methods: ['POST'],
-  allowedHeaders: ['Content-Type', 'Upstash-Signature'],
-});
+import { ThrottlerModule } from '@nestjs/throttler';
+import { envValidationSchema } from 'config/env.validation';
+import { HealthModule } from 'health/health.module';
+import { NotificationModule } from 'notification/notification.module';
 
 @Module({
   imports: [
@@ -20,16 +13,17 @@ const notificationsHandlerCors = cors({
     }),
     ConfigModule.forRoot({
       isGlobal: true,
+      validationSchema: envValidationSchema,
     }),
-    QueueModule,
-    MailerModule,
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 30,
+      },
+    ]),
+    NotificationModule,
+    HealthModule,
   ],
-  controllers: [NotificationController],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(notificationsHandlerCors, NotificationMiddleware)
-      .forRoutes('/notification/handler');
-  }
-}
+export class AppModule {}
+
